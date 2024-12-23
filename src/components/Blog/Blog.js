@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Blog = ({blog}) => {
+const Blog = ({blog, handleIncrementLike, handleSaveUnSave}) => {
     const tagsLength = blog.tags.length;
 
     return (
@@ -15,10 +15,10 @@ const Blog = ({blog}) => {
                        {blog.tags.map((tag, index) => <span>#{tag} {index < tagsLength - 1 && ","}</span>)}
                     </div>
                     <div class="btn-group">
-                        <button class="like-btn" id="lws-singleLinks">
+                        <button class="like-btn" id="lws-singleLinks" onClick={handleIncrementLike}>
                             <i class="fa-regular fa-thumbs-up"></i> {blog.likes}
                         </button>
-                        <button class="active save-btn" id="lws-singleSavedBtn">
+                        <button class={`${blog.isSaved ? 'active' : ""} save-btn`} id="lws-singleSavedBtn" onClick={handleSaveUnSave}>
                             <i class="fa-regular fa-bookmark"></i> {blog.isSaved ? 'Saved' : 'Save'}
                         </button>
                     </div>
