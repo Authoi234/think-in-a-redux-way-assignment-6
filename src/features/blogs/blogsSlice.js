@@ -9,8 +9,8 @@ const initialState = {
     error: ''
 };
 
-export const fetchBlogs = createAsyncThunk('blogs/fetchBlogs', async () => {
-    const blogs = await getBlogs();
+export const fetchBlogs = createAsyncThunk('blogs/fetchBlogs', async ({filter, sort}) => {
+    const blogs = await getBlogs(filter, sort);
     return blogs;
 });
 

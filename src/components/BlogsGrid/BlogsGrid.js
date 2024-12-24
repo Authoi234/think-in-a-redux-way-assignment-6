@@ -7,10 +7,12 @@ import Loading from '../ui/Loading';
 const BlogsGrid = () => {
     const dispatch = useDispatch();
     const { blogs, isError, isLoading, error } = useSelector(state => state.blogs);
+    const {filterBy} = useSelector(state => state.filter);
+    const {sortBy} = useSelector(state => state.sort);
 
     useEffect(() => {
-        dispatch(fetchBlogs());
-    }, [dispatch]);
+        dispatch(fetchBlogs({filter: filterBy, sort: sortBy}));
+    }, [dispatch, filterBy, sortBy]);
 
     let content; 
 

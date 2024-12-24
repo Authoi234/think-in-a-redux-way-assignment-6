@@ -6,11 +6,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchBlog, saveBlog, updateBlogLikes } from '../../features/blog/blogSlice';
 import Loading from '../../components/ui/Loading';
 import { useParams } from 'react-router-dom';
+import RelatedBlogs from '../../components/RelatedBlogs/RelatedBlogs';
+import { fetchRelatedBlogs } from './../../features/relatedBlogs/relatedBlogsSlice';
 
 const Post = () => {
     const dispatch = useDispatch();
     const { postId } = useParams();
     const { blog, isError, isLoading, error } = useSelector(state => state.blog);
+    const { relatedBlogs } = useSelector(state => state.relatedBlogs);
+
+    useEffect(() => {
+        dispatch(fetchBlog(postId));
+    }, [dispatch, postId]);
+
+    useEffect(() => {
+        if (blog?.tags !== ([] || undefined)) {
+            dispatch(fetchRelatedBlogs({ tags: blog?.tags, id: postId }));
+        };
+    }, [dispatch, postId, blog?.id, blog?.tags]);
 
     const handleIncrementLike = () => {
         if (blog.likes !== undefined) {
@@ -20,17 +33,11 @@ const Post = () => {
     };
 
     const handleSaveUnSave = () => {
-        console.log('ami')
         if (blog.likes !== undefined) {
-            console.log('a');
             const statusSaved = !blog.isSaved;
-            dispatch(saveBlog({id:blog.id, statusSaved: statusSaved}));
+            dispatch(saveBlog({ id: blog.id, statusSaved: statusSaved }));
         }
     };
-
-    useEffect(() => {
-        dispatch(fetchBlog(postId));
-    }, [dispatch, postId]);
 
     let content;
 
@@ -48,6 +55,7 @@ const Post = () => {
                 <GoHome></GoHome>
                 <section class="post-page-container">
                     {content}
+                    <RelatedBlogs relatedBlogs={relatedBlogs}></RelatedBlogs>
                 </section>
             </div>
         </div>
